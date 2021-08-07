@@ -1,39 +1,37 @@
 class Enigma
+  attr_reader :available
 
+  def initialize
+    @available = ("a".."z").to_a << " "
+  end
 
   def encrypt(message, key, date)
-    positions = []
+    encrypt = {encryption: nil, key: key, date: date}
+    new = []
     split = message.chars
-    split.each do |letter|
-      positions << available.index(letter)
+    new_shift = shifts(key, date)
+    positions = split.map do |letter|
+      available.index(letter)
     end
     positions.each do |position|
-      require "pry"; binding.pry
+      new_shift.map do |shift|
+        unless positions.length == 0
+          new << available.rotate(shift)[positions.shift]
+        end
+      end
     end
+    encrypt[:encryption] = new.join
+    encrypt
   end
 
-  def available
-    ("a".."z").to_a << " "
-  end
-
-  def a_key(key, date)
-    a_key = key[0..1].to_i + square_date(date)[0]
-  end
-
-  def b_key(key, date)
-    b_key = key[1..2].to_i + square_date(date)[1]
-  end
-
-  def c_key(key, date)
-    c_key = key[2..3].to_i + square_date(date)[2]
-  end
-
-  def d_key(key, date)
-    d_key = key[3..4].to_i + square_date(date)[3]
+  def shifts(key, date)
+    [key[0..1].to_i + square_date(date)[0].to_i,
+    key[1..2].to_i + square_date(date)[1].to_i,
+    key[2..3].to_i + square_date(date)[2].to_i,
+    key[3..4].to_i + square_date(date)[3].to_i]
   end
 
   def square_date(date)
-  square_date = (date.to_i ** 2).to_s[-4..-1].to_i
+    (date.to_i ** 2).to_s[-4..-1].to_s
   end
-
 end
