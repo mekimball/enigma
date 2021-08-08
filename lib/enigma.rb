@@ -11,17 +11,36 @@ class Enigma
     split = message.chars
     new_shift = shifts(key, date)
     positions = split.map do |letter|
-      available.index(letter)
+        available.index(letter)
     end
     positions.each do |position|
-      new_shift.map do |shift|
+      new_shift.each do |shift|
         unless positions.length == 0
           new << available.rotate(shift)[positions.shift]
+          encrypt[:encryption] = new.join
         end
       end
     end
-    encrypt[:encryption] = new.join
     encrypt
+  end
+
+  def decrypt(message, key, date)
+    decrypt = {decryption: nil, key: key, date: date}
+    new = []
+    split = message.chars
+    new_shift = shifts(key, date)
+    positions = split.map do |letter|
+        available.index(letter)
+    end
+    positions.each do |position|
+      new_shift.each do |shift|
+        unless positions.length == 0
+          new << available.rotate(-shift)[positions.shift]
+          decrypt[:decryption] = new.join
+        end
+      end
+    end
+    decrypt
   end
 
   def shifts(key, date)
@@ -31,7 +50,7 @@ class Enigma
     key[3..4].to_i + square_date(date)[3].to_i]
   end
 
-  def square_date(date)
+  def square_date(date = time.strftime("%d%m%y"))
     (date.to_i ** 2).to_s[-4..-1].to_s
   end
 end
