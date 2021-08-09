@@ -35,7 +35,7 @@ RSpec.describe Enigma do
     expected = {
                 encryption: "nefau qdxly",
                 key: "02715",
-                date: "090821" #only works on Aug 8 obviously.
+                date: Time.now.strftime("%d%m%y")
               }
     expect(enigma.encrypt("hello world", "02715")).to eq(expected)
   end
@@ -45,7 +45,7 @@ RSpec.describe Enigma do
     expected = {
                 decryption: "hello world",
                 key: "02715",
-                date: "090821" #only works on Aug 8 obviously.
+                date: Time.now.strftime("%d%m%y")
               }
     expect(enigma.decrypt("nefau qdxly", "02715")).to eq(expected)
   end
