@@ -1,5 +1,4 @@
 require './lib/enigma'
-require './lib/encrypt'
 
 enigma = Enigma.new
 file = File.open("encrypted.txt", "r")
