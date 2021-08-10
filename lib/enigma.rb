@@ -1,10 +1,10 @@
 require 'date'
 class Enigma
-  attr_reader :available
+  attr_reader :available,
+              :open_encrypt
 
   def initialize
     @available = ("a".."z").to_a << " "
-
   end
 
   def encrypt(message, key = rand(0..99999).to_s.rjust(5,"0"), date = Time.now.strftime("%d%m%y"))
@@ -14,7 +14,6 @@ class Enigma
     new_shift = shifts(key, date)
     positions = split.map do |letter|
         available.index(letter)
-        # require "pry"; binding.pry
     end
     positions.each do |position|
       new_shift.each do |shift|
@@ -56,4 +55,13 @@ class Enigma
   def square_date(date)
     (date.to_i ** 2).to_s[-4..-1].to_s
   end
+
+  # def open_encrypt
+  #   File.open("message.txt", "r") do |info|
+  #     info.each_line do |line|
+  #       File.open("encrypted.txt", "w") { |f| f.write enigma.encrypt(line.chomp)}
+  #       p "created 'encrypted.txt' with key  #{enigma.encrypt(line.chomp)[:key]} and date #{enigma.encrypt(line.chomp)[:date]}"
+  #     end
+  #   end
+  # end
 end

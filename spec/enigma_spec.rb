@@ -49,4 +49,5 @@ RSpec.describe Enigma do
               }
     expect(enigma.decrypt("nefau qdxly", "02715")).to eq(expected)
   end
+
 end
